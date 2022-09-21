@@ -1,0 +1,37 @@
+[package]
+name = "twelve_data"
+version = "0.1.0"
+edition = "2021"
+authors = ["Lukas Krejci <code@krejci.pw>"]
+homepage = "https://github.com/metlos/twelve_data"
+repository = "https://github.com/metlos/twelve_data"
+description = "Simple Rust API for accessing the Twelve Data HTTP API (https://twelvedata.com)"
+license = "MIT"
+readme = "README.md"
+keywords = ["twelvedata", "currency", "finance", "stock", "exchange"]
+categories = ["api-bindings", "web-programming::http-client"]
+
+[dependencies]
+async-trait = "0.1"
+reqwest = {version = "0.11", optional = true}
+surf = {version = "2.3", optional = true}
+serde_urlencoded = "0.7"
+serde_json = "1.0"
+serde_derive = "1.0"
+serde = "1.0"
+serde_with = "2.0"
+derive_builder = "0.11"
+chrono = {version = "0.4", features = ["serde", "rustc-serialize"]}
+
+[dev-dependencies]
+tokio = {version = "1.21", features = ["full"]}
+tokio-test = "0.4"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[features]
+default = ["reqwest-client"]
+reqwest-client = ["reqwest"]
+surf-client = ["surf"]
