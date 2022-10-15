@@ -1,6 +1,6 @@
-use std::{error::Error as StdError, result::Result as StdResult, fmt::Display, f32::consts::E};
+use std::{error::Error as StdError, fmt::Display, result::Result as StdResult};
 
-use serde::{Deserialize, de::DeserializeOwned};
+use serde::de::DeserializeOwned;
 
 use crate::http_client::Response;
 
@@ -35,7 +35,12 @@ impl StdError for Error {
 impl Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Error::HttpError(e) => write!(f, "HTTP error (status {})", e.status().map_or_else(|| "unknown".to_owned(), |s| s.as_str().into())),
+            Error::HttpError(e) => write!(
+                f,
+                "HTTP error (status {})",
+                e.status()
+                    .map_or_else(|| "unknown".to_owned(), |s| s.as_str().into())
+            ),
             Error::QueryConstruction(_) => write!(f, "query construction error"),
             Error::ResponseParsing(_) => write!(f, "failed to parse the output"),
             Error::DataError(reason) => write!(f, "failed to obtain data: {}", reason),
@@ -74,7 +79,7 @@ impl<T: DeserializeOwned> From<Response> for Result<T> {
         if res.status == 200 {
             Ok(serde_json::from_str::<T>(&res.body)?)
         } else {
-            Err(Error::DataError(format!("status {}", res.status)))   
+            Err(Error::DataError(format!("status {}", res.status)))
         }
     }
-} 
+}

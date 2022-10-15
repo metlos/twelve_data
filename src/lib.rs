@@ -25,11 +25,11 @@ const API_URL: &str = "https://api.twelvedata.com";
 
 pub struct TwelveData {
     api_key: String,
-    client: Box<dyn HttpClient>,
+    client: Box<dyn HttpClient + Send + Sync>,
 }
 
 impl TwelveData {
-    pub fn new(api_key: &str, client: Box<dyn HttpClient>) -> Self {
+    pub fn new(api_key: &str, client: Box<dyn HttpClient + Send + Sync>) -> Self {
         Self {
             api_key: api_key.to_owned(),
             client: client,

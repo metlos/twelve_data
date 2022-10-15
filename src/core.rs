@@ -224,7 +224,7 @@ impl<'de> serde::de::Visitor<'de> for TdDateTimeVisitor {
     {
         match NaiveDateTime::parse_from_str(v, "%Y-%m-%d %H:%M:%S") {
             Ok(ndt) => Ok(ndt),
-            Err(e) => match NaiveDate::parse_from_str(v, "%Y-%m-%d") {
+            Err(_) => match NaiveDate::parse_from_str(v, "%Y-%m-%d") {
                 Ok(nd) => Ok(nd.and_hms(0, 0, 0)),
                 Err(e) => Err(E::custom(format!(
                     "unexpected date time format of {}: {}",
