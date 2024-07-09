@@ -1,5 +1,5 @@
 use derive_builder::Builder;
-use serde::{Serialize, Deserialize};
+use serde_derive::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
 #[derive(Debug, Serialize, Deserialize, Builder)]

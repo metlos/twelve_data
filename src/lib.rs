@@ -6,7 +6,7 @@ use crate::core::TimeSeriesRequest;
 use crate::core::TimeSeriesResponse;
 use fundamentals::LogoRequest;
 use fundamentals::LogoResponse;
-use serde::Deserialize;
+use serde_derive::Deserialize;
 use serde_with::skip_serializing_none;
 use std::fmt::Display;
 
@@ -18,8 +18,8 @@ use derive_builder::Builder;
 
 pub mod core;
 pub mod errors;
-pub mod http_client;
 pub mod fundamentals;
+pub mod http_client;
 
 const API_URL: &str = "https://api.twelvedata.com";
 
@@ -32,7 +32,7 @@ impl TwelveData {
     pub fn new(api_key: &str, client: Box<dyn HttpClient + Send + Sync>) -> Self {
         Self {
             api_key: api_key.to_owned(),
-            client: client,
+            client,
         }
     }
 
@@ -169,7 +169,7 @@ impl Default for OutputFormat {
 #[derive(Debug, Serialize, Deserialize, Builder, Default)]
 #[builder(pattern = "owned")]
 #[skip_serializing_none]
-pub struct  CommonQueryParameters {
+pub struct CommonQueryParameters {
     #[builder(default, setter(strip_option))]
     pub exchange: Option<String>,
 
