@@ -15,13 +15,7 @@ pub trait HttpClient {
 #[async_trait]
 impl HttpClient for reqwest::Client {
     async fn get(&self, url: &str, api_key: &str) -> Result<Response> {
-        Response::from(
-            self.get(url)
-                .query(&[("apikey", api_key)])
-                .send()
-                .await?,
-        )
-        .await
+        Response::from(self.get(url).query(&[("apikey", api_key)]).send().await?).await
     }
 }
 
@@ -39,11 +33,13 @@ impl Response {
 #[async_trait]
 impl HttpClient for surf::Client {
     async fn get(&self, url: &str, api_key: &str) -> Result<Response> {
-        Response::from(self
-            .get(url)
-            .header("Authorization", format!("apikey {}", api_key))
-            .send()
-            .await?).await
+        Response::from(
+            self.get(url)
+                .header("Authorization", format!("apikey {}", api_key))
+                .send()
+                .await?,
+        )
+        .await
     }
 }
 
@@ -54,6 +50,30 @@ impl Response {
         Ok(Self {
             status: r.status().into(),
             body: r.body_string().await?,
+        })
+    }
+}
+
+#[cfg(feature = "wreq-client")]
+#[async_trait]
+impl HttpClient for wreq::Client {
+    async fn get(&self, url: &str, api_key: &str) -> Result<Response> {
+        Response::from(
+            self.get(url)
+                .header("Authorization", format!("apikey {}", api_key))
+                .send()
+                .await?,
+        )
+        .await
+    }
+}
+
+#[cfg(feature = "wreq-client")]
+impl Response {
+    async fn from(r: wreq::Response) -> Result<Self> {
+        Ok(Self {
+            status: r.status().into(),
+            body: r.text().await?,
         })
     }
 }

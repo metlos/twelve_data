@@ -12,6 +12,9 @@ pub enum Error {
     #[cfg(feature = "surf-client")]
     HttpError(surf::Error),
 
+    #[cfg(feature = "wreq-client")]
+    HttpError(wreq::Error),
+
     QueryConstruction(serde_urlencoded::ser::Error),
 
     ResponseParsing(serde_json::Error),
@@ -58,6 +61,13 @@ impl From<reqwest::Error> for Error {
 #[cfg(feature = "surf-client")]
 impl From<surf::Error> for Error {
     fn from(e: surf::Error) -> Self {
+        Self::HttpError(e)
+    }
+}
+
+#[cfg(feature = "wreq-client")]
+impl From<wreq::Error> for Error {
+    fn from(e: wreq::Error) -> Self {
         Self::HttpError(e)
     }
 }

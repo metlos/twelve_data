@@ -1,6 +1,6 @@
 [package]
 name = "twelve_data"
-version = "0.3.0"
+version = "0.4.0"
 edition = "2021"
 authors = ["Lukas Krejci <code@krejci.pw>"]
 homepage = "https://github.com/metlos/twelve_data"
@@ -15,6 +15,7 @@ categories = ["api-bindings", "web-programming::http-client"]
 async-trait = "0.1"
 reqwest = { version = "0.12", optional = true }
 surf = { version = "2.3", optional = true }
+wreq = { version = "6.0.0-rc.20", optional = true }
 serde_urlencoded = "0.7"
 serde_json = "1.0"
 serde_derive = "1.0"
@@ -35,3 +36,4 @@ rustdoc-args = ["--cfg", "docsrs"]
 default = ["reqwest-client"]
 reqwest-client = ["reqwest"]
 surf-client = ["surf"]
+wreq-client = ["wreq"]
